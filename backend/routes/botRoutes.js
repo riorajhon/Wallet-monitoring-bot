@@ -59,7 +59,7 @@ router.post('/', async (req, res) => {
     const bot = new Bot(doc);
     await bot.save();
     const ethAddr = getEthereumAddress(bot);
-    if (ethAddr) await addOrUpdateWallet(ethAddr);
+    if (ethAddr) await addOrUpdateWallet(ethAddr).catch(() => {});
     const bnbAddr = getBnbAddress(bot);
     if (bnbAddr) await addOrUpdateWalletBNB(bnbAddr).catch(() => {});
     const tronAddr = trimAddr(bot.walletTron);
@@ -96,7 +96,7 @@ router.patch('/:id', async (req, res) => {
     bot.isRunning = keepRunning;
     await bot.save();
     const ethAddr = getEthereumAddress(bot);
-    if (ethAddr) await addOrUpdateWallet(ethAddr);
+    if (ethAddr) await addOrUpdateWallet(ethAddr).catch(() => {});
     const bnbAddr = getBnbAddress(bot);
     if (bnbAddr) await addOrUpdateWalletBNB(bnbAddr).catch(() => {});
     const tronAddr = trimAddr(bot.walletTron);

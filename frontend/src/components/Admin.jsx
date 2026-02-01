@@ -216,7 +216,8 @@ export default function Admin({ onSelectWallet }) {
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Failed to create bot');
-        setBots((prev) => [data, ...prev]);
+        closeModal();
+        await loadBots();
         setSelectedBotId(data._id);
       } else {
         const res = await fetch(`${API}/${editId}`, {
@@ -228,8 +229,8 @@ export default function Admin({ onSelectWallet }) {
         if (!res.ok) throw new Error(data.error || 'Failed to update bot');
         setBots((prev) => prev.map((b) => (b._id === editId ? data : b)));
         if (selectedBotId === editId) setSelectedBotId(editId);
+        closeModal();
       }
-      closeModal();
     } catch (e) {
       setError(e.message);
     } finally {
