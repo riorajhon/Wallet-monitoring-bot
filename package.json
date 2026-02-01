@@ -1,0 +1,13 @@
+{
+  "name": "wallet-monitor",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Multi-chain wallet monitor — frontend build only; integrate output with backend yourself",
+  "scripts": {
+    "build": "npm run build --prefix frontend",
+    "dev:frontend": "npm run dev --prefix frontend"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
