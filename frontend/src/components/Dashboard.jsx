@@ -525,6 +525,7 @@ function ageToAgo(ageStr) {
   if (!d) return ageStr || '—';
   const now = new Date();
   const diffMs = now - d;
+  if (diffMs < 0) return 'just now';
   const sec = Math.floor(diffMs / 1000);
   const min = Math.floor(sec / 60);
   const hrs = Math.floor(min / 60);
@@ -534,6 +535,7 @@ function ageToAgo(ageStr) {
   if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
   if (hrs > 0) return `${hrs} hr${hrs > 1 ? 's' : ''} ago`;
   if (min > 0) return `${min} min ago`;
+  if (sec > 0) return `${sec}s ago`;
   return 'just now';
 }
 
@@ -591,6 +593,11 @@ const PAGE_SIZE = 10;
 
 function TransactionsTable({ transactions, walletAddress, dateFilter = 'all', onDateFilterChange, explorerBaseUrl = 'https://etherscan.io', explorerTxPath = '/tx/' }) {
   const [page, setPage] = useState(0);
+  const [tick, setTick] = useState(() => Date.now());
+  useEffect(() => {
+    const id = setInterval(() => setTick(Date.now()), 1000);
+    return () => clearInterval(id);
+  }, []);
 
   const sorted = [...(transactions || [])].sort((a, b) => {
     const da = parseAgeDate(a.age)?.getTime() ?? 0;
